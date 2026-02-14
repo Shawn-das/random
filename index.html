@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine My Love ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff4e8a, #ff9a9e);
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+/* Floating Hearts */
+.heart {
+    position: fixed;
+    bottom: -50px;
+    color: rgba(255,255,255,0.6);
+    font-size: 20px;
+    animation: floatUp 8s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+.container {
+    padding: 50px 20px;
+}
+
+/* Photo Wrapper */
+.photo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Glowing Photo */
+.love-photo {
+    width: 320px;
+    height: 320px;
+    border-radius: 20px;
+    object-fit: cover;
+    animation: glow 2s infinite alternate;
+    transition: transform 0.5s ease;
+}
+
+.love-photo:hover {
+    transform: scale(1.05);
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 20px #fff, 0 0 40px #ff9a9e;
+    }
+    to {
+        box-shadow: 0 0 50px #fff, 0 0 90px #ff4e8a;
+    }
+}
+
+/* Sparkles */
+.sparkle {
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    animation: sparkle 2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes sparkle {
+    0% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+/* Title */
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 48px;
+    margin-top: 20px;
+}
+
+/* Message */
+.message {
+    max-width: 600px;
+    margin: 20px auto;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Fireworks Canvas */
+#fireworksCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none;
+    z-index: 0;
+} 
+
+
+/* Button */
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #ff4e8a;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ffe0ec;
+}
+
+.surprise {
+    display: none;
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+    <canvas id="fireworksCanvas"></canvas>
+
+<!-- Background Music -->
+<audio id="bgMusic" autoplay loop>
+    <source src="temp/song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+    <div class="photo-wrapper" id="photoBox">
+        <img src="temp/us.jpeg" class="love-photo" alt="Our Love">
+    </div>
+
+    <h1>You Are My Forever ❤️</h1>
+
+    <div class="message">
+        From the moment you came into my life, everything became brighter, warmer, and more beautiful.
+        Every laugh, every hug, every memory with you is my favorite.
+        I don't just love you for today… I love you for always.
+    </div>
+
+    <button onclick="showSurprise()">Click For Surprise 💌</button>
+
+    <div class="surprise" id="surprise">
+        I Love You More Than Words Can Ever Say ❤️
+    </div>
+
+</div>
+
+<script>
+function showSurprise() {
+    document.getElementById("surprise").style.display = "block";
+     startFireworks();
+}
+
+/* Try autoplay on load */
+window.addEventListener("load", function () {
+    const music = document.getElementById("bgMusic");
+    music.play().catch(() => {
+        // If blocked, play on first click anywhere
+        document.body.addEventListener("click", function () {
+            music.play();
+        }, { once: true });
+    });
+});
+
+/* Floating Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+}
+setInterval(createHeart, 500);
+
+/* Sparkles Around Photo */
+function createSparkle() {
+    const sparkle = document.createElement("div");
+    sparkle.classList.add("sparkle");
+    sparkle.innerHTML = "✨";
+
+    const box = document.getElementById("photoBox");
+    sparkle.style.left = Math.random() * box.offsetWidth + "px";
+    sparkle.style.top = Math.random() * box.offsetHeight + "px";
+
+    box.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 2000);
+}
+setInterval(createSparkle, 300);
+</script>
+<script>
+const canvas = document.getElementById("fireworksCanvas");
+const ctx = canvas.getContext("2d");
+let particles = [];
+let fireworksActive = false;
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+function createFirework(x, y) {
+    for (let i = 0; i < 80; i++) {
+        particles.push({
+            x: x,
+            y: y,
+            radius: 2,
+            color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+            speedX: (Math.random() - 0.5) * 6,
+            speedY: (Math.random() - 0.5) * 6,
+            life: 100
+        });
+    }
+}
+
+function animateFireworks() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.life--;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        if (p.life <= 0) {
+            particles.splice(index, 1);
+        }
+    });
+
+    if (fireworksActive) {
+        requestAnimationFrame(animateFireworks);
+    }
+}
+
+function startFireworks() {
+    canvas.style.display = "block";
+    fireworksActive = true;
+    animateFireworks();
+
+    const interval = setInterval(() => {
+        createFirework(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height / 2
+        );
+    }, 500);
+
+    // Stop after 6 seconds
+    setTimeout(() => {
+        fireworksActive = false;
+        canvas.style.display = "none";
+        clearInterval(interval);
+    }, 6000);
+}
+</script>
+
+</body>
+</html>
+
+
